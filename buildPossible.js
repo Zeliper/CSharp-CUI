@@ -56,7 +56,6 @@ unsafeWindow.on = true;
     let jsString = await httpGet(baseUrl + "/js/afxImport.js");
     let modules = jsString.split(`require.cache[require.resolveWeak('`).filter(e=>e.split(`//`).length < 2).map(e=>e.split(`')]`)[0]);
 	let jsons = modules.filter(e=>e.split(".directive").length <2).filter(e=>e.split(".controller").length <2).filter(e => e);
-    console.log(jsons);
     let Modules = [];
     for(let json of jsons){
         let name = json;
@@ -72,10 +71,6 @@ unsafeWindow.on = true;
         }
 
         Modules.push({deps : modulePath, name : name});
-
-        if(json == "soa/kernel/soaService"){
-            console.log({deps : modulePath, name : name});
-        }
     }
     await InitModules(Modules,()=>{
 		unsafeWindow.ctx = unsafeWindow.appCtxService.ctx;
